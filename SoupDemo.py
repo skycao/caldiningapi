@@ -2,7 +2,8 @@ from bs4 import BeautifulSoup
 import urllib2
 
 class NutFacts:
-    def __init__(self, TotalFat, SatFat, TransFat, Cholesterol, Sodium, TotCarb, DietFib, Sugars, Protein, VitC, Calcium, Iron):
+    def __init__(self, Calories, TotalFat, SatFat, TransFat, Cholesterol, Sodium, TotCarb, DietFib, Sugars, Protein, VitC, Calcium, Iron):
+        self.calories = Calories
         self.totfat = TotalFat
         self.satfat = SatFat
         self.transfat = TransFat
@@ -37,7 +38,12 @@ def getmenu(Name, MealType):
     soup = BeautifulSoup(page.read())
     for link in soup.find_all('a'):
         if 'label.asp?locationNum' in link.get('href'):
+            nutfactlist = processnutfacts(link.get('href'))
+            
             
     
+def processnutfacts(link):
+    url = link
+    page = urllib2.urlopen(url)
+    soup = BeautifulSoup(page.read())
     
-
