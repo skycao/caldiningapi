@@ -1,0 +1,46 @@
+#background {
+	background-color: #f3eddc;
+}
+
+
+#header {
+	height: 100px;
+	width: 100%;
+	background-color: #5971A1;
+	margin-top: 100px;
+	border:none;
+}
+
+#middle {
+	height: 500px;
+	text-align:left;
+	font-family: Arial;
+	padding: 20px 400px 20px 400px;
+	background-color: #f3eddc;
+}
+
+#footer {
+	height: 100px;
+	background-color: #848484;
+	clear:both;
+}
+
+a {
+	text-decoration: none;
+}
+
+
+h1 {
+	font-family: 'Lobster Two';
+	color: white;
+	font-size: 100px;
+	text-align: right;
+}
+
+h2 {
+	font-family: 'Oswald';
+}
+
+p {
+	font-family: "Roboto Slab";
+}

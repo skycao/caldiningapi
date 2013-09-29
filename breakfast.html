@@ -5,7 +5,11 @@
 	<link href = "css/style.css" rel="stylesheet" type="text/css" />
 	<link href='http://fonts.googleapis.com/css?family=Lobster+Two:700|Oswald' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300' rel='stylesheet' type='text/css'>
-
+	<script>
+		function readfile() {
+		alert(document.getElementById('iframe').contentDocument.body.firstChild.innerHTML);
+		}
+	</script>
 </head>
 <body>
 
@@ -24,12 +28,8 @@
 			</form>
 
 			<br/>
-			<p>The following dining halls have the most options:</p>
-			<ol>
-				<li>Foothill Dining Commons</li>
-				<li>CKC</li>
-				<li>Crossroads</li>
-				<li>Cafe 3</li>
+			<p>You should eat at</p>
+			<iframe id='iframe' src = 'hall.txt' onload='readfile()'> </iframe>				
 				
 	</div>
 
