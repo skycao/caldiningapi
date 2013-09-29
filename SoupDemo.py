@@ -60,7 +60,7 @@ def processnutfacts(link):
     soup = BeautifulSoup(page.read())
     for value in soup.find_all('font'):
         nut_string = value.contents[0].string
-        if 'Calories' in nut_string[0:7]: #Calories is a special case
+        if 'Calories' in nut_string and 'Calories from Fat' not in nut_string: #Calories is a special case
             NutFactDict['Calories'] = nut_string[14:]
         elif nut_string[:-1] in NutritionValues:
             NutFactDict[nut_string] = value.find_next('font').contents[0].string[:-1] #last character is g for grams, must index that out
