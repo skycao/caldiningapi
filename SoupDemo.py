@@ -1,8 +1,10 @@
 from bs4 import BeautifulSoup
 import urllib2
 
+NutritionValues = {'Calories', 'Total Fat', 'Sat. Fat', 'Trans Fat', 'Cholesterol', 'Sodium', 'Tot. Carb.', 'Dietary Fiber', 'Sugars', 'Protein', 'Vitamin C', 'Calcium', 'Iron'}
+
 class NutFacts:
-    def __init__(self, Calories, TotalFat, SatFat, TransFat, Cholesterol, Sodium, TotCarb, DietFib, Sugars, Protein, VitC, Calcium, Iron):
+    """def __init__(self, Calories, TotalFat, SatFat, TransFat, Cholesterol, Sodium, TotCarb, DietFib, Sugars, Protein, VitC, Calcium, Iron):
         self.calories = Calories
         self.totfat = TotalFat
         self.satfat = SatFat
@@ -18,14 +20,15 @@ class NutFacts:
         self.iron = Iron
     def __init__(self, NutFactList):
         self.list = NutFactList
+        """
     def __init__(self, NutFactDict):
         self.dict = NutFactDict
 
 class Item:
-    def __init__(self, Name, MealType, NutritionFacts):
+    def __init__(self, Name,  NutritionFacts, Veg):
         self.name = Name
-        self.mealtype = MealType
         self.nutfacts = NutritionFacts
+        self.veg = Veg
 
 class DiningCommon:
     def __init__(self, Name, ItemList):
@@ -38,12 +41,25 @@ def getmenu(Name, MealType):
     soup = BeautifulSoup(page.read())
     for link in soup.find_all('a'):
         if 'label.asp?locationNum' in link.get('href'):
-            nutfactlist = processnutfacts(link.get('href'))
+            NutFactObject = processnutfacts('http://services.housing.berkeley.edu/FoodPro/dining/static/' + link.get('href'))
+            ItemName = link.contents[0].contents[0].string
+            
             
             
     
 def processnutfacts(link):
+    NutFactDict = {}
     url = link
     page = urllib2.urlopen(url)
     soup = BeautifulSoup(page.read())
-    
+    for value in soup.find_all('font'):
+        nut_string = value.contents[0].string
+        if 'Calories' in nut_string[0:7]: #Calories is a special case
+            NutFactDict['Calories'] = nut_string[14:]
+        elif nut_string[:-1] in NutritionValues:
+            NutFactDict[nut_string] = value.find_next('font').contents[0].string[:-1] #last character is g for grams, must index that out
+    return NutFacts(NutFactDict)
+
+            
+            
+            
