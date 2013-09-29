@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import urllib2
+import csv
 
 NutritionValues = {'Calories', 'Total Fat', 'Sat. Fat', 'Trans Fat', 'Cholesterol', 'Sodium', 'Tot. Carb.', 'Dietary Fiber', 'Sugars', 'Protein', 'Vitamin C', 'Calcium', 'Iron'}
 
@@ -58,14 +59,30 @@ def processnutfacts(link):
     url = link
     page = urllib2.urlopen(url)
     soup = BeautifulSoup(page.read())
-    for value in soup.find_all('font'):
+    value = soup.find('font')
+    while value.find_next('font') != None:
+        print(value)
         nut_string = value.contents[0].string
+        nut_string.replace(u'\xa0', u' ').strip()
         if 'Calories' in nut_string and 'Calories from Fat' not in nut_string: #Calories is a special case
             NutFactDict['Calories'] = nut_string[14:]
-        elif nut_string[:-1] in NutritionValues:
-            NutFactDict[nut_string] = value.find_next('font').contents[0].string[:-1] #last character is g for grams, must index that out
+        elif nut_string in NutritionValues:
+            NutFactDict[nut_string] = value.find_next('font').contents[0].string.replace(u'\xa0', u' ').strip()
+        value = value.find_next('font')
     return NutFacts(NutFactDict)
 
             
-            
+
+"""Write into from Soup Demo to file"""
+def write(DC):
+    ofile = csv.writer(open('test.csv', "wb"))
+    ofile.writerow = (["name","vegan","calories","totalfat","satfat","transfat","cholesterol","sodium","totalcarbs","dietfib","sugar","protein","vitc","calcium","iron"])
+    for x in DC.list:
+        row = []
+        row.append(x.name.toString())
+        row.append(x.veg.toString())
+        for y in x.nutfacts:
+            row.append(y.toString())
+        ofile.writerow(row)
+    ofile.close()            
             
