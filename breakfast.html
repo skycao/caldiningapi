@@ -1,0 +1,48 @@
+<html id = "background">
+
+<head>
+	<title>Cal Dining</title>
+	<link href = "css/style.css" rel="stylesheet" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lobster+Two:700|Oswald' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300' rel='stylesheet' type='text/css'>
+	<script>
+		function readfile() {
+		alert(document.getElementById('iframe').contentDocument.body.firstChild.innerHTML);
+		}
+	</script>
+</head>
+<body>
+
+	<div id = "header">
+		<a href = "index.html"><h1>cal dining</h1></a>
+
+	</div>
+
+	<div id = "middle">
+		<h2>Breakfast</h2>
+			<p>Anything in particular?</p>
+			<br />
+			<form>
+				<input type="text" name="breakfast">
+				<input type="submit" value="search">
+			</form>
+
+			<br/>
+			<p>You should eat at</p>
+			<iframe id='iframe' src = 'hall.txt' onload='readfile()'> </iframe>				
+				
+	</div>
+
+
+
+	<div id="footer"></div>
+
+
+
+
+
+
+</body>
+
+
+</html>
