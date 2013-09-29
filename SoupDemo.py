@@ -25,7 +25,7 @@ class NutFacts:
         self.dict = NutFactDict
 
 class Item:
-    def __init__(self, Name,  NutritionFacts, Veg):
+    def __init__(self, Name, NutritionFacts, Veg):
         self.name = Name
         self.nutfacts = NutritionFacts
         self.veg = Veg
