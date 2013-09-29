@@ -36,6 +36,7 @@ class DiningCommon:
         self.list = ItemList
 
 def getmenu(Name, MealType):
+    ItemList = []
     url = "http://services.housing.berkeley.edu/FoodPro/dining/static/DiningMenus.asp?dtCurDate=9/28/2013&strCurLocation=01&strCurLocationName=" + Name.upper()
     page = urllib2.urlopen(url)
     soup = BeautifulSoup(page.read())
@@ -43,7 +44,12 @@ def getmenu(Name, MealType):
         if 'label.asp?locationNum' in link.get('href'):
             NutFactObject = processnutfacts('http://services.housing.berkeley.edu/FoodPro/dining/static/' + link.get('href'))
             ItemName = link.contents[0].contents[0].string
-            
+            if link.contents[0].contents[0].get('color') == '#000000':
+                veg = False
+            else:
+                veg = True
+            ItemList.append(Item(ItemName, NutFactObject, veg))
+    return DiningCommon(Name, ItemList)
             
             
     
