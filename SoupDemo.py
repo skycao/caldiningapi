@@ -38,21 +38,48 @@ class DiningCommon:
 
 def getmenu(Name, MealType):
     ItemList = []
-    url = "http://services.housing.berkeley.edu/FoodPro/dining/static/DiningMenus.asp?dtCurDate=9/28/2013&strCurLocation=01&strCurLocationName=" + Name.upper()
+    url = "http://services.housing.berkeley.edu/FoodPro/dining/static/todaysentrees.asp"
     page = urllib2.urlopen(url)
     soup = BeautifulSoup(page.read())
-    for link in soup.find_all('a'):
-        if 'label.asp?locationNum' in link.get('href'):
-            NutFactObject = processnutfacts('http://services.housing.berkeley.edu/FoodPro/dining/static/' + link.get('href'))
-            ItemName = link.contents[0].contents[0].string
-            if link.contents[0].contents[0].get('color') == '#000000':
-                veg = False
-            else:
-                veg = True
-            ItemList.append(Item(ItemName, NutFactObject, veg))
+    value = soup.find('td')
+    for _ in range(assign_num(Name)):
+        value = find_next_mealtype(value, MealType)
+    ItemList = process_items(value)
     return DiningCommon(Name, ItemList)
-            
-            
+
+#get all the items and their information from the td element value
+def process_items(value): #value should be a td element that contains all the items for that meal
+    ItemList = []
+    links = value.find_all('a')
+    if links == []:
+        return ('Closed', None, None)
+    for link in links:
+        NutFactObject = processnutfacts('http://services.housing.berkeley.edu/FoodPro/dining/static/' + link.get('href'))
+        ItemName = link.contents[0].contents[0].string
+        print(link.contents[0].contents[0])
+        if link.contents[0].get('color') == '#000000':
+            veg = False
+        else:
+            veg = True
+        ItemList.append(Item(ItemName, NutFactObject, veg))
+    return ItemList
+        
+#find the td element that contains the menu items for that meal
+def find_next_mealtype(value, mealtype):
+    while mealtype.lower() not in value.find_next('b').string.lower():
+        value = value.find_next('td')
+    return value
+
+#dining commons appear in this order
+def assign_num(name):
+    if name.lower() == 'crossroads':
+        return 1
+    elif name.lower() == 'cafe 3':
+        return 2
+    elif name.lower() == 'foothill':
+        return 3
+    else:
+        return 4
     
 def processnutfacts(link):
     NutFactDict = {}
@@ -61,11 +88,10 @@ def processnutfacts(link):
     soup = BeautifulSoup(page.read())
     value = soup.find('font')
     while value.find_next('font') != None:
-        print(value)
         nut_string = value.contents[0].string
-        nut_string.replace(u'\xa0', u' ').strip()
+        nut_string = nut_string.replace(u'\xa0', u' ').strip()
         if 'Calories' in nut_string and 'Calories from Fat' not in nut_string: #Calories is a special case
-            NutFactDict['Calories'] = nut_string[14:]
+            NutFactDict['Calories'] = nut_string[9:]
         elif nut_string in NutritionValues:
             NutFactDict[nut_string] = value.find_next('font').contents[0].string.replace(u'\xa0', u' ').strip()
         value = value.find_next('font')
