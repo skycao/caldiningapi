@@ -2,4 +2,8 @@ Cal Dining API
 
 Used to scrape the menu options for each meal for each dining common. 
 
-The backend can be found in SoupDemo.py. The method getmenu takes in two parameters -- name and mealtype, which specifies the dining commons and the meal. It returns a DiningCommon object instance. A DiningCommon object has a name and an ItemList, which holds the list of menu items. Item objects have a name, nutfacts object, and a boolean veg, which states whether the item is vegetarian or not. NutFacts objects hold a dictionary that has keys as nutritients and values as amounts. 
+The backend can be found in SoupDemo.py. The method getmenu takes in two parameters -- name and mealtype,
+which specifies the dining commons and the meal. It returns a DiningCommon object instance. A DiningCommon
+object has a name and an ItemList, which holds the list of menu items. Item objects have a name, nutfacts 
+object, and a boolean veg, which states whether the item is vegetarian or not. NutFacts objects hold a 
+dictionary that has keys as nutritients and values as amounts. 
