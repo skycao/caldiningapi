@@ -43,7 +43,7 @@ def getmenu(Name, MealType):
     soup = BeautifulSoup(page.read())
     value = soup.find('td')
     for _ in range(assign_num(Name)):
-        value = find_next_mealtype(value, MealType)
+        value = find_next_mealtype(value, MealType) #takes value to the correct location in the html
     ItemList = process_items(value)
     return DiningCommon(Name, ItemList)
 
@@ -52,7 +52,7 @@ def process_items(value): #value should be a td element that contains all the it
     ItemList = []
     links = value.find_all('a')
     if links == []:
-        return ('Closed', None, None)
+        return 'Closed'
     for link in links:
         NutFactObject = processnutfacts('http://services.housing.berkeley.edu/FoodPro/dining/static/' + link.get('href'))
         ItemName = link.contents[0].contents[0].string
